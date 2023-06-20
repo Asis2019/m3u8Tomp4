@@ -35,7 +35,12 @@ const merge2mp4 = async (url, options) => {
     ffmpeg.FS('writeFile', 'index.m3u8', parseObj['index.m3u8']);
     ffmpeg.setLogging(logOpen);
     ffmpeg.setProgress(({ratio}) => {
-        logger.log(`Merge progress ${ratio}.`);
+        if (ratio === 1) {
+            logger.log(`Video download completed.`);
+        } else {
+            let percentage = Math.round(ratio * 100);
+            logger.log(`Merge progress ${percentage}%.`);
+        }
     });
 
     const downLoadResult = {
@@ -71,9 +76,7 @@ const merge2mp4 = async (url, options) => {
             },
         });
 
-        if (
-            downLoadResult.successItems.length === downLoadResult.totalItems.length
-        ) {
+        if (downLoadResult.successItems.length === downLoadResult.totalItems.length) {
             break;
         } else {
             tsArr = downLoadResult.errorItems;
