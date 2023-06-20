@@ -17,8 +17,8 @@
 				<label for="input">Enter m3u8 link here: </label>
 				<input id="input" placeholder="m3u8 link"/>
 			</div>
-			<button class="button center" onclick="startDownload()">Start download and convert to mp4</button>
-			<div id="logger"></div>
+			<button class="button center" onclick="startDownload()" id="download-button">Start download and convert to mp4</button>
+			<code id="logger"></code>
 		</div>
 		
 		<script>
@@ -39,7 +39,10 @@
             }
 
             const startDownload = () => {
+                const button = document.getElementById("download-button");
                 const value = document.getElementById("input").value;
+
+                button.disabled = true;
                 m3u8tomp4
                     .default(value)
                     .then((res) => {
@@ -48,7 +51,8 @@
                         const video = document.getElementById("player");
                         video.src = url;
                         saveData(url, value.split('/').pop());
-                    });
+                    })
+                    .finally(() => button.disabled = false);
             };
 		</script>
 	</body>

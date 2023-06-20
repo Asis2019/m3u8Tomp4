@@ -23,6 +23,7 @@ video {
     gap: 1rem;
     margin-block: 1.25rem;
 }
+
 .m3u8-input > input {
     flex-grow: 1;
 }
@@ -35,6 +36,12 @@ video {
     color: #fff;
     background-color: #0069d9;
     border-color: #0062cc;
+}
+
+.button:disabled {
+    filter: brightness(50%);
+    opacity: .65;
+    pointer-events: none;
 }
 
 .button {
@@ -53,6 +60,7 @@ video {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: .25rem;
+    cursor: pointer;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
