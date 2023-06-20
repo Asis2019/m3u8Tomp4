@@ -1,14 +1,14 @@
 import * as FFmpeg from '@ffmpeg/ffmpeg';
-import praseM3u8, { retryFetchFile } from './praseM3u8';
+import parseM3u8, {retryFetchFile} from './parseM3u8';
 import logger from './logger';
-import { requestPool } from './requestPool';
+import {requestPool} from './requestPool';
 
 // interface MergeOptions {
-//   /** 下载 TS 片段时，最大的并发请求数量，默认 6 */
+//   /** The maximum number of concurrent download requests, default 6 */
 //   maxLimit?: number;
-//   /** 是否打印日志，默认 true */
+//   /** Whether to print the log, default true */
 //   logOpen?: boolean;
-//   /** 如果下载ts片段，出现下载失败的情况，重新下载所有失败片段的次数，默认 3 */
+//   /** If the download of ts fragments fails, the number of times to re-download all failed fragments, default 3 */
 //   retryTimes?: number;
 // }
 
@@ -21,22 +21,22 @@ const merge2mp4 = async (url, options) => {
     logger.setLogger(undefined);
   }
   const ffmpeg = createFFmpeg();
-  logger.log(`开始下载${url},并获取所有ts片段链接`);
-  const praseObj = await praseM3u8(url);
-  if (!praseObj) {
-    logger.log(`解析 m3u8 列表出错！`);
+  logger.log(`Starting download of ${url}`);
+  const parseObj = await parseM3u8(url);
+  if (!parseObj) {
+    logger.log(`analyze m3u8 list error！`);
     return null;
   }
-  console.log(praseObj);
+  console.log(parseObj);
   debugger
-  let tsArr = praseObj.tsArr;
+  let tsArr = parseObj.tsArr;
 
-  logger.log(`加载ffmpeg...`);
+  logger.log(`loading ffmpeg...`);
   await ffmpeg.load();
-  ffmpeg.FS('writeFile', 'index.m3u8', praseObj['index.m3u8']);
+  ffmpeg.FS('writeFile', 'index.m3u8', parseObj['index.m3u8']);
   ffmpeg.setLogging(logOpen);
   ffmpeg.setProgress(({ ratio }) => {
-    logger.log(`合并进度${ratio}.`);
+    logger.log(`Merge progress ${ratio}.`);
   });
 
   const downLoadResult = {
@@ -63,7 +63,7 @@ const merge2mp4 = async (url, options) => {
           const totalCount = downLoadResult.totalItems.length;
 
           logger.log(
-            `正在下载ts片段: 成功${successCount}段，失败${errorCount}段，总共${totalCount}段`,
+            `Downloading ts fragments: success ${successCount} part，fail ${errorCount} part，total ${totalCount} part`,
           );
         } catch (error) {
           logger.log(error);
@@ -89,7 +89,7 @@ const merge2mp4 = async (url, options) => {
   //   const index = tsArr.indexOf(ts);
   //   logger.log(`正在下载ts片段: 第${index}段，共${tsArr.length}段`);
   // }
-  logger.log(`开始执行合并.`);
+  logger.log(`Starting ts merge.`);
   await ffmpeg.run(
     '-allowed_extensions',
     'ALL',
@@ -99,9 +99,7 @@ const merge2mp4 = async (url, options) => {
     'copy',
     'output.mp4',
   );
-  const data = ffmpeg.FS('readFile', 'output.mp4');
-
-  return data;
+  return ffmpeg.FS('readFile', 'output.mp4');
 };
 
 export const setLogger = logger.setLogger;

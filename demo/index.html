@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>在线合并m3u8</title>
-  </head>
-  <body>
-    <!-- <script src="https://unpkg.com/@zackdk/m3u8tomp4@1.0.0/dist/m3u8tomp4.browser.mini.js"></script> -->
-    <script src="./m3u8tomp4.browser.mini.js"></script>
-    <video id="player" controls></video>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Merge m3u8 online</title>
+		<!-- <script src="https://unpkg.com/@zackdk/m3u8tomp4@1.0.0/dist/m3u8tomp4.browser.mini.js"></script> -->
+		<script src="./m3u8tomp4.browser.mini.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="container center">
+			<h1>m3u8Tomp4 by CodeByZack forked by Asis2019</h1>
+			<video id="player" class="center" controls></video>
+			
+			<div class="m3u8-input">
+				<label for="input">Enter m3u8 link here: </label>
+				<input id="input" placeholder="m3u8 link"/>
+			</div>
+			<button class="button center" onclick="startDownload()">Start download and convert to mp4</button>
+			<div id="logger"></div>
+		</div>
+		
+		<script>
+            const logger = (text) => {
+                const loggerDiv = document.getElementById("logger");
+                loggerDiv.innerText = text;
+            };
 
-    <div>
-      <input id="input" placeholder="在这输入m3u8链接" />
-      <button onclick="startDownload()">开始下载并转换为mp4</button>
-    </div>
-    <div id="logger"></div>
+            m3u8tomp4.setLogger(logger);
 
-    <script>
-      const logger = (text) => {
-        const loggerDiv = document.getElementById("logger");
-        loggerDiv.innerText = text;
-      };
+            const startDownload = () => {
+                const input = document.getElementById("input");
+                const value = input.value;
+                m3u8tomp4.default(value).then((res) => {
+                    const url = URL.createObjectURL(new Blob([res.buffer], {type: 'video/mp4'}));
+                    console.log(url);
+                    const video = document.getElementById("player");
+                    video.src = url;
+                });
+            };
 
-      m3u8tomp4.setLogger(logger);
-
-      const startDownload = () => {
-        const input = document.getElementById("input");
-        const value = input.value;
-        m3u8tomp4.default(value).then((res) => {
-
-          const url = URL.createObjectURL(new Blob([res.buffer], { type: 'video/mp4' }));
-          console.log(url);
-          const video = document.getElementById("player");
-          video.src = url;
-        });
-      };
-
-      (function () {
-        var src = "//cdn.jsdelivr.net/npm/eruda";
-        if (
-          !/eruda=true/.test(window.location) &&
-          localStorage.getItem("active-eruda") != "true"
-        )
-          return;
-        document.write("<scr" + 'ipt src="' + src + '"></scr' + "ipt>");
-        document.write("<scr" + "ipt>eruda.init();</scr" + "ipt>");
-      })();
-    </script>
-  </body>
+            const src = "//cdn.jsdelivr.net/npm/eruda";
+            if (/eruda=true/.test(window.location) && localStorage.getItem("active-eruda") === "true") {
+                document.write(`<script src="${src}"/>`);
+                document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+            }
+		</script>
+	</body>
 </html>

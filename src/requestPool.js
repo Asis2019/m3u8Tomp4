@@ -9,10 +9,10 @@
 // }
 
 /**
- * promise并发限制调用
- * @param {object[]} data - 调用的数据列表
- * @param {number} maxLimit - 并发调用限制个数
- * @param {function} iteratee - 处理单个节点的方法
+ * promise concurrency limit calls
+ * @param {object[]} data - Called data list
+ * @param {number} maxLimit - The number of concurrent calls is limited
+ * @param {function} iteratee - Methods for dealing with a single node
  * @returns {promise}
  */
 export const requestPool = ({
@@ -58,7 +58,7 @@ export const requestPool = ({
   return enqueue();
 };
 
-// 示例
+// Example:
 // promiseLimitPool({
 //   data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 //   maxLimit: 2,

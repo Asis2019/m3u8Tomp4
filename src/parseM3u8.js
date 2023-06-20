@@ -1,12 +1,7 @@
 import * as FFmpeg from '@ffmpeg/ffmpeg';
-import {
-  Uint8ArrayToString,
-  StringToUint8Array,
-  getFullUrl,
-  getFileName,
-} from './utils';
+import {getFileName, getFullUrl, StringToUint8Array, Uint8ArrayToString,} from './utils';
 import logger from './logger';
-import { Parser } from 'm3u8-parser';
+import {Parser} from 'm3u8-parser';
 
 const { fetchFile } = FFmpeg;
 const reg = /(.*\/).*\.m3u8$/;
@@ -16,19 +11,18 @@ const retry =
   async (...args) => {
     for (let i = 0; i < retryCount; i++) {
       try {
-        const data = await fn.apply(null, args);
-        return data;
+        return await fn.apply(null, args);
       } catch (error) {
-        logger.log(`下载${args[0]}出错,已尝试次数${i + 1}`);
+        logger.log(`download ${args[0]}go wrong,Attempts${i + 1}`);
         if (i === retryCount - 1)
-          throw new Error(`尝试次数${retryCount}次,获取失败！`);
+            throw new Error(`number of attempts${retryCount}Second-rate,fetch failed！`);
       }
     }
   };
 
 export const retryFetchFile = retry(fetchFile);
 
-const praseM3u8 = async (url) => {
+const parseM3u8 = async (url) => {
   const res = await retryFetchFile(url);
   const data = Uint8ArrayToString(res);
   let copyMediaList = data;
@@ -41,11 +35,10 @@ const praseM3u8 = async (url) => {
   const { playlists, segments } = manifest;
   const [_, prefixUrl] = url.match(reg);
   if (playlists?.length) {
-    // 如果有多个码率,默认选第一个
+    // If there are multiple code rates, the first one is selected by default
     const playList = playlists[0];
     const fullUrl = getFullUrl(prefixUrl, playList.uri);
-    const tsRes = await praseM3u8(fullUrl);
-    return tsRes;
+    return await parseM3u8(fullUrl);
   }
 
   if (segments?.length) {
@@ -80,4 +73,4 @@ const praseM3u8 = async (url) => {
   return null;
 };
 
-export default praseM3u8;
+export default parseM3u8;

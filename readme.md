@@ -9,19 +9,19 @@
   </a>
 </p>
 
-> 一个便利的工具，从 m3u8 转换到 mp4 文件，并且可以在浏览器端使用！
+> A handy tool that converts m3u8 to mp4 files and works in the browser!
 
-## 感谢
+## Credit
 
-基于优秀的 FFMPEG [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)，简单封装了下。
+Based on the excellent FFMPEG [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)，Simply encapsulated。
 
-## demo 演示
+## Demo
 
-见 demo 文件夹下。
+See demo under the folder。
 
-[在线体验](https://m3u8-tomp4.vercel.app/index.html)
+[online demo](https://m3u8-tomp4.vercel.app/index.html)
 
-## 安装
+## Installation
 
 ### In Browser
 
@@ -35,7 +35,7 @@
 npm i @zackdk/m3u8tomp4
 ```
 
-## 使用
+## Usage
 
 ```javascript
 //node端
@@ -54,27 +54,27 @@ const url = URL.createObjectURL(new Blob([res.buffer], { type: 'video/mp4' }));
 m3u8tomp4.setLogger((msg) => console.log);
 ```
 
-## options
+## Options
 
 ```typescript
 interface MergeOptions {
-  /** 下载 TS 片段时，最大的并发请求数量，默认 6 */
+  /** The maximum number of concurrent download requests, default 6 */
   maxLimit?: number;
-  /** 是否打印日志，默认 true */
+  /** Whether to print the log, default true */
   logOpen?: boolean;
-  /** 如果下载ts片段，出现下载失败的情况，重新下载所有失败片段的次数，默认 3 */
+  /** If the download of ts fragments fails, the number of times to re-download all failed fragments, the default is 3 */
   retryTimes?: number;
 }
 ```
 
-## 限制
+## Limits
 
-具体请参照 ffmpeg.wasm 的[FAQ](https://github.com/ffmpegwasm/ffmpeg.wasm#faq).
+For details, please refer to ffmpeg.wasm at [FAQ](https://github.com/ffmpegwasm/ffmpeg.wasm#faq).
 
-1. 只能在支持 SharedArrayBuffer 的浏览器种运行.(目前看来只有 PC 端的谷歌浏览器可以用)
+1. only support SharedArrayBuffer browsers running.(Currently only PC 端的谷歌浏览器可以用)
 
-2. 由于 WebAssembly 的限制,最大支持 2GB 文件的输入.
+2. WebAssembly limits the maximum supported file input to 2GB.
 
-## 支持一下
+## Support
 
-如果该库对你有帮助，可以点一下 ⭐️!
+If this library helps you please star itt️!
