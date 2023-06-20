@@ -14,6 +14,12 @@ export default {
       format: 'umd',
       plugins: [terser()],
     },
+    {
+      file: 'demo/m3u8tomp4.browser.mini.js',
+      name: 'm3u8tomp4',
+      format: 'umd',
+      plugins: [terser()],
+    },
   ],
   plugins: [
     resolve({ browser: true }),

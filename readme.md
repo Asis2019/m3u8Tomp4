@@ -10,11 +10,11 @@
 
 ## Credit
 
-Based on the excellent FFMPEG [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)，Simply encapsulated。
+Based on the excellent FFMPEG [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm), this module wraps it.
 
 ## Demo
 
-See demo under the folder。
+See demo under the folder.
 
 [online demo](https://m3u8-tomp4.vercel.app/index.html)
 
@@ -68,10 +68,10 @@ interface MergeOptions {
 
 For details, please refer to ffmpeg.wasm at [FAQ](https://github.com/ffmpegwasm/ffmpeg.wasm#faq).
 
-1. only support SharedArrayBuffer browsers running.(Currently only PC 端的谷歌浏览器可以用)
+1. Only support browser that have SharedArrayBuffer running. (Currently only PC)
 
 2. WebAssembly limits the maximum supported file input to 2GB.
 
 ## Support
 
-If this library helps you please star itt️!
+If this library helps you please star the repository!

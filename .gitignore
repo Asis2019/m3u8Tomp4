@@ -2,3 +2,4 @@ node_modules/
 dist/
 .idea/
 .vscode/
+/demo/m3u8tomp4.browser.mini.js

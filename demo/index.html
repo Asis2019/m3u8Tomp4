@@ -29,22 +29,27 @@
 
             m3u8tomp4.setLogger(logger);
 
-            const startDownload = () => {
-                const input = document.getElementById("input");
-                const value = input.value;
-                m3u8tomp4.default(value).then((res) => {
-                    const url = URL.createObjectURL(new Blob([res.buffer], {type: 'video/mp4'}));
-                    console.log(url);
-                    const video = document.getElementById("player");
-                    video.src = url;
-                });
-            };
-
-            const src = "//cdn.jsdelivr.net/npm/eruda";
-            if (/eruda=true/.test(window.location) && localStorage.getItem("active-eruda") === "true") {
-                document.write(`<script src="${src}"/>`);
-                document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+            const saveData = (blobUrl, fileName) => {
+                const a = document.createElement("a");
+                a.classList.add('d-none');
+                document.body.appendChild(a);
+                a.href = blobUrl;
+                a.download = fileName;
+                a.click();
             }
+
+            const startDownload = () => {
+                const value = document.getElementById("input").value;
+                m3u8tomp4
+                    .default(value)
+                    .then((res) => {
+                        const url = URL.createObjectURL(new Blob([res.buffer], {type: 'video/mp4'}));
+                        console.log(url);
+                        const video = document.getElementById("player");
+                        video.src = url;
+                        saveData(url, value.split('/').pop());
+                    });
+            };
 		</script>
 	</body>
 </html>
